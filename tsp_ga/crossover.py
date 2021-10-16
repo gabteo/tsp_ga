@@ -1,8 +1,8 @@
-import cromossomo
+from cromossomo import Cromossomo 
 import random
 
 class crossover(object):
-    # lembrar de conferir se funciona com classe cromossomo
+    # lembrar de conferir se funciona com classe Cromossomo
     def __init__(self, pai1, pai2, method):
         if (method == "pmx") or (method == "PMX"):
             self.pmx(pai1, pai2)
@@ -29,23 +29,29 @@ class crossover(object):
             cutB = random.randint(0, len(pai1))
 
         # ordena cortes, para que cutA < cut B
-        if cutB > cutA:
+        if cutB < cutA:
             aux = cutA
             cutA = cutB
             cutB = aux
 
-        # inicializando cromossomos filhos com o mesmo tamanho dos pais
-        filho1 = cromossomo(len(pai1))
-        filho2 = cromossomo(len(pai1))
+        # inicializando Cromossomos filhos com o mesmo tamanho dos pais
+        filho1 = Cromossomo.cromFromSize(len(pai1))
+        filho2 = Cromossomo.cromFromSize(len(pai1))
 
-        # copiando para os filhos a parte dos cromossomos pais entre os cortes
+        # copiando para os filhos a parte dos Cromossomos pais entre os cortes
+        '''
+        for i in range(cutA, cutB):
+            filho1[i] = pai1[i]
+            filho2[i] = pai2[i]
+        '''
         filho1[cutA:cutB] = pai1[cutA:cutB]
         filho2[cutA:cutB] = pai2[cutA:cutB]
+        
 
         # copiar pais sem elementos que já estão nos filhos
-        # inicializando cromossomos vazios para a cópia:
-        pai1_copia = cromossomo(len(pai1))
-        pai2_copia = cromossomo(len(pai1))
+        # inicializando Cromossomos vazios para a cópia:
+        pai1_copia = Cromossomo.cromVazio()
+        pai2_copia = Cromossomo.cromVazio()
 
         '''
         for i in range(len(pai1)):
@@ -82,7 +88,8 @@ class crossover(object):
             if j == len(filho2):            # j é index do filho
                 #volta pro começo do filho se já tiver feito o final
                 j = 0
-            elif (j < len(filho2)) and (j >= cutB): 
+                filho2[j] = pai1_copia[i]
+            if (j < len(filho2)) and (j >= cutB): 
                 # final do filho         
                 filho2[j] = pai1_copia[i]
                 j += 1
@@ -93,8 +100,43 @@ class crossover(object):
             elif j == cutA:
                 break
 
+        j = cutB
+        for i in range(len(pai2_copia)):    # i é index do pai
+            if j == len(filho1):            # j é index do filho
+                #volta pro começo do filho se já tiver feito o final
+                j = 0
+            if (j < len(filho1)) and (j >= cutB): 
+                # final do filho         
+                filho1[j] = pai2_copia[i]
+                j += 1
+            elif (j < len(filho1)) and (j < cutA):
+                # primeira parte do filho
+                filho1[j] = pai2_copia[i]
+                j += 1
+            elif j == cutA:
+                break
+        
+        print("cut A: " + str(cutA))
+        print("cut B: " + str(cutB))
 
+        print("pai 1: ")
+        print(pai1)
+        print("pai 2: ")
+        print(pai2)
+        
+        print("filho 1: ")
+        print(filho1)
+        print("filho 2: ")
+        print(filho2)
         return [filho1, filho2]
 
     def cx(self, pai1, pai2):
         return
+
+C1 = ['1', '2', '3', '4', '5', '6', '7']
+C2 = ['7', '5', '3', '1', '6', '4', '2']
+#print(len(C1),len(C2))
+novoPai1 = Cromossomo.cromFromCidades(C1)
+novoPai2 = Cromossomo.cromFromCidades(C2)
+
+crossover(novoPai1, novoPai2, "OX")
