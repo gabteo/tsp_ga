@@ -1,22 +1,32 @@
+
 from collections import Sequence
 import cidades
 
 class Cromossomo(object):
-    #gene = []
-    #fitness = 0
+    gene = []
+    fitness=0
 
-    def __init__(self, Cidades, size):
-        self.gene = []
-        self.fitness = 0
 
-        #print(type(Cidades))
-        #print(Cidades)
-        #l=len(Cidades)
-        #print(l)
-        #l = int(Cidades)-1
-        for i in range(len(Cidades)):
-            self.gene.append(Cidades[i])
-        #self.fitness()
+    def __init__(self, cidades,size):
+        for i in range(len(cidades)):
+            self.gene.append(cidades[i])
+        
+
+
+
+    def calculafitness(self,matriz):
+        for i in range(len(self.gene)-1):
+            self.fitness=self.fitness+(matriz[self.gene[i],self.gene[i+1]])
+        
+    #por troca
+    def mutacaoEM(self):
+        i=random.randrange(len(self.gene)-1)
+        j=random.randrange(len(self.gene)-1)
+        while (i==j):
+            j=random.randrange(len(self.gene))
+
+        self.gene[i],self.gene[j]=self.gene[j],self.gene[i]
+
 
     @classmethod
     def cromFromSize(cls, size):
@@ -45,11 +55,6 @@ class Cromossomo(object):
     def __str__(self):
         self.str = str(self.gene)
         return self.str
-
-    def fitness(self):
-        for i in range(len(self.gene)):
-            #self.fitness += cidades.dist(self.gene[i], self.gene[i-1])
-            pass
 
     def getFitness(self):
         return self.fitness
