@@ -3,13 +3,16 @@ from collections import Sequence
 import cidades
 
 class Cromossomo(object):
-    gene = []
-    fitness=0
+    #gene = []
+    #fitness=0
 
 
     def __init__(self, cidades,size):
+        self.gene = []
+        self.fitness=0
         for i in range(len(cidades)):
             self.gene.append(cidades[i])
+        #self.calculafitness()
         
 
 
