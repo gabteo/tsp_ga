@@ -21,12 +21,14 @@ class cidades(object):
         # Cria matriz e vetores a partir dos arquivos
         self.enderecosVetor = np.loadtxt(self.enderecos, dtype = type(str), delimiter=";")
         self.usVetor = np.loadtxt(self.us, dtype = type(str), delimiter=";")
-        self.matrizCidades = np.loadtxt(self.arquivoDists, delimiter=";")
+        self.matrizDist = np.loadtxt(self.arquivoDists, delimiter=";")
 
         # Origem: linhas
         # Destino: colunas
+
+        self.maxDist = self.matrizDist.max()
         
-        print(self.matrizCidades)
+        print(self.matrizDist)
         print(self.usVetor)
         # print(self.enderecosVetor)
 
@@ -38,7 +40,10 @@ class cidades(object):
         return self.enderecosVetor
 
     def getMatrizDist(self):
-        return self.matrizCidades
+        return self.matrizDist
+
+    def getMaxDist(self):
+        return self.maxDist
 
 
 # teste: instancia classe, imprime vetores e matriz
