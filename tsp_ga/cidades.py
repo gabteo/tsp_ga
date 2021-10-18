@@ -5,7 +5,7 @@ import numpy as np
 #matrix=np.random.randint(2,10,(4,4))
 #np.fill_diagonal(matrix,0)
 
-class CidadesDados(object):
+class cidades(object):
     def __init__(self):
         self.carregarCidades()
 
@@ -22,15 +22,24 @@ class CidadesDados(object):
         self.enderecosVetor = np.loadtxt(self.enderecos, dtype = type(str), delimiter=";")
         self.usVetor = np.loadtxt(self.us, dtype = type(str), delimiter=";")
         self.matrizCidades = np.loadtxt(self.arquivoDists, delimiter=";")
+
+        # Origem: linhas
+        # Destino: colunas
         
         print(self.matrizCidades)
         print(self.usVetor)
-        print(self.enderecosVetor)
+        # print(self.enderecosVetor)
 
     # retorna vetor de apelidos das "cidades", no caso o nome das US
-    def getApelido(self):
+    def getApelidos(self):
         return self.usVetor
+
+    def getEnderecos(self):
+        return self.enderecosVetor
+
+    def getMatrizDist(self):
+        return self.matrizCidades
 
 
 # teste: instancia classe, imprime vetores e matriz
-dists = CidadesDados()
+#dists = CidadesDados()
