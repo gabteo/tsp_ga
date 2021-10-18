@@ -1,4 +1,4 @@
-from cromossomo import Cromossomo 
+from cromossomo import cromossomo 
 import random
 
 class crossover(object):
@@ -35,8 +35,8 @@ class crossover(object):
             cutB = aux
 
         # inicializando Cromossomos filhos com o mesmo tamanho dos pais
-        filho1 = Cromossomo.cromFromSize(len(pai1))
-        filho2 = Cromossomo.cromFromSize(len(pai1))
+        filho1 = cromossomo.cromFromSize(len(pai1))
+        filho2 = cromossomo.cromFromSize(len(pai1))
 
         # copiando para os filhos a parte dos Cromossomos pais entre os cortes
         '''
@@ -50,8 +50,8 @@ class crossover(object):
 
         # copiar pais sem elementos que já estão nos filhos
         # inicializando Cromossomos vazios para a cópia:
-        pai1_copia = Cromossomo.cromVazio()
-        pai2_copia = Cromossomo.cromVazio()
+        pai1_copia = cromossomo.cromVazio()
+        pai2_copia = cromossomo.cromVazio()
 
         '''
         for i in range(len(pai1)):
@@ -133,6 +133,7 @@ class crossover(object):
     def cx(self, pai1, pai2):
         return
 
+'''
 C1 = ['1', '2', '3', '4', '5', '6', '7']
 C2 = ['7', '5', '3', '1', '6', '4', '2']
 #print(len(C1),len(C2))
@@ -140,3 +141,4 @@ novoPai1 = Cromossomo.cromFromCidades(C1)
 novoPai2 = Cromossomo.cromFromCidades(C2)
 
 crossover(novoPai1, novoPai2, "OX")
+'''
