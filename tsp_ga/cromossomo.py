@@ -23,13 +23,27 @@ class cromossomo(object):
     def calculafitness(self, matriz):
         # Origem: linhas
         # Destino: colunas
+        self.distTotal = 0
         apelidos = self.objCidades.getApelidos()
         for i in range(len(self.gene)-1):
             indexOrigem = np.where(apelidos == self.gene[i-1])
             indexDestino = np.where(apelidos == self.gene[i])
-            self.fitness += (matriz[indexOrigem,indexDestino])
+            # soma as distancias e torna o total negativo
+            self.distTotal += (matriz[indexOrigem,indexDestino])
             # self.fitness=self.fitness+(matriz[self.gene[i],self.gene[i+1]])
-        print("fitness=" + str(self.fitness))
+        
+        self.fitness = self.distTotal*(-1)
+        numVertices = len(apelidos)
+        
+        # vamos encontrar o total de arestas, se o grafo fosse completo, e... 
+        # funciona, mas talvez não seja a melhor ideia. Ver outra opção no próx bloco de comentario.
+        # self.fitness += self.objCidades.getMaxDist()*(numVertices/2)*(numVertices-1)
+
+        # somamos ao fitness (negativo) um valor certamente maior que qquer fitness possível,
+        # que é o fit de uma rota em que todas as distâncias são iguais à dist máxima
+        self.fitness += self.objCidades.getMaxDist()*numVertices
+        # agora fitness é positivo, e valores maiores representam rotas menores
+        # print("fitness=" + str(self.fitness))
             
         
     #por troca
@@ -39,8 +53,9 @@ class cromossomo(object):
         j=random.randrange(len(self.gene)-1)
         while (i==j):
             j=random.randrange(len(self.gene))
-
         self.gene[i],self.gene[j]=self.gene[j],self.gene[i]
+        # recalcula fitness após mutação:
+        self.calculafitness(self.objCidades.getMatrizDist())
 
 
     @classmethod
@@ -84,4 +99,7 @@ class cromossomo(object):
 
     def getFitness(self):
         return self.fitness
+
+    def getDistTotal(self):
+        return self.distTotal
             
