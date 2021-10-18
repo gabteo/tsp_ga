@@ -1,4 +1,4 @@
-
+import random
 from collections import Sequence
 import cidades
 
@@ -7,7 +7,7 @@ class Cromossomo(object):
     #fitness=0
 
 
-    def __init__(self, cidades,size):
+    def __init__(self, cidades, size):
         self.gene = []
         self.fitness=0
         for i in range(len(cidades)):
@@ -16,8 +16,10 @@ class Cromossomo(object):
         
 
 
-
-    def calculafitness(self,matriz):
+    # no argumento, seria melhor passar matriz de distancias ou 
+    # instancia da classe cidades? Onde mapear nome da cidade para
+    # índice da matriz?
+    def calculafitness(self, matriz):
         for i in range(len(self.gene)-1):
             self.fitness=self.fitness+(matriz[self.gene[i],self.gene[i+1]])
         
