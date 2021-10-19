@@ -3,14 +3,17 @@ import random
 
 class crossover(object):
     # lembrar de conferir se funciona com classe Cromossomo
-    def __init__(self, pai1, pai2, method):
+    def __init__(self):
+    #def __init__(self, pai1, pai2, method):
+        '''
+        self.filhos = []
         if (method == "pmx") or (method == "PMX"):
-            self.pmx(pai1, pai2)
+            self.filhos = self.pmx(pai1, pai2)
         elif (method == "ox") or (method == "OX"):
-            self.ox(pai1, pai2)
+            self.filhos = self.ox(pai1, pai2)
         elif (method == "cx") or (method == "CX"):
-            self.cx(pai1, pai2)
-
+            self.filhos = self.cx(pai1, pai2)
+        '''
     def pmx(self, pai1, pai2):
         return
 
@@ -115,7 +118,7 @@ class crossover(object):
                 j += 1
             elif j == cutA:
                 break
-        
+        '''
         print("cut A: " + str(cutA))
         print("cut B: " + str(cutB))
 
@@ -128,7 +131,14 @@ class crossover(object):
         print(filho1)
         print("filho 2: ")
         print(filho2)
-        return [filho1, filho2]
+        '''
+        filho1.calculafitness()
+        filho2.calculafitness()
+        filhos = []        
+        filhos.append(filho1)
+        filhos.append(filho2)
+        #print(filhos)
+        return filhos
 
     def cx(self, pai1, pai2):
         return
