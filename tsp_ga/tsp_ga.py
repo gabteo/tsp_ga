@@ -17,6 +17,9 @@ def main():
     pop = geraPopInicial(tamPopulacao)
     geracaoAtual = 0
     
+    #Probabilidade de Mutação
+    p=0.01
+    
     for m in range(geracoes): 
         # calcula fitTot e imprime populacoes geradas
         for i in range(len(pop)):
@@ -41,6 +44,9 @@ def main():
         geracaoAtual += 1
         # realiza cruzamento e adiciona filhos à população
         pop = cruzamento(pop, pais, crossoverObj)
+        
+        #Aplica a probabilidade de mutação a todos os integrantes da população
+        mutacao(p,pop)
 
         # remove piores cromossomos até que len(pop) = tamPopulacao
         pop = selecionaPop(pop, tamPopulacao)
@@ -110,6 +116,15 @@ def selecionaPop(pop, tamPopulacao):
         del pop[indexMinFit]
         del fitList[indexMinFit]
     return pop
+
+
+def mutacao(p,pop):
+
+    for i in range(len(pop)):
+        if (random.random()<p):
+            #print("Gene antigo "+ str(pop[i].gene))
+            pop[i].mutacaoEM()
+            #print("Gene novo " + str(pop[i].gene))
 
     #popSort = 
     #while len(pop) > tamPopulacao:
