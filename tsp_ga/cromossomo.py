@@ -10,22 +10,28 @@ class cromossomo(object):
 
     def __init__(self, apelidoCidades, size):
         self.gene = []
-        self.fitness=0
         for i in range(len(apelidoCidades)):
             self.gene.append(apelidoCidades[i])
         random.shuffle(self.gene)
-        self.calculafitness(self.objCidades.getMatrizDist())
+        self.calculafitness()
         
 
     # no argumento, seria melhor passar matriz de distancias ou 
     # instancia da classe cidades? Onde mapear nome da cidade para
     # índice da matriz?
-    def calculafitness(self, matriz):
+    def calculafitness(self):
         # Origem: linhas
         # Destino: colunas
+        matriz = self.objCidades.getMatrizDist()
         self.distTotal = 0
+        self.fitness = 0
         apelidos = self.objCidades.getApelidos()
         for i in range(len(self.gene)-1):
+            #quando retorna ao inicio:
+            #indexOrigem = np.where(apelidos == self.gene[i-1])
+            #indexDestino = np.where(apelidos == self.gene[i])
+
+            #quando não retorna ao inicio
             indexOrigem = np.where(apelidos == self.gene[i-1])
             indexDestino = np.where(apelidos == self.gene[i])
             # soma as distancias e torna o total negativo
@@ -45,7 +51,13 @@ class cromossomo(object):
         # agora fitness é positivo, e valores maiores representam rotas menores
         # print("fitness=" + str(self.fitness))
             
-        
+    def setProbSel(self, fitTot):
+        self.probSel = self.fitness/fitTot
+
+    def getProbSel(self):
+        return self.probSel
+
+
     #por troca
     # implementar probabilidade de realizar mutacao
     def mutacaoEM(self):
@@ -55,7 +67,7 @@ class cromossomo(object):
             j=random.randrange(len(self.gene))
         self.gene[i],self.gene[j]=self.gene[j],self.gene[i]
         # recalcula fitness após mutação:
-        self.calculafitness(self.objCidades.getMatrizDist())
+        self.calculafitness()
 
 
     @classmethod
