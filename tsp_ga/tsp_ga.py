@@ -7,30 +7,29 @@ import time
 
 def main():
     start_time = time.time()
-    tamPopulacao = 1000 #1200
-    #unidadesSaude = cidades()
-    fitTot = 0
-    crossoverObj = crossover()
-    
+    tamPopulacao = 100 #1200 1000
     # numero de pais selecionados para cruzamento em cada geracao:
-    nPais = 40 #25
-    geracoes = 18
+    nPais = 10 #25 40
+    geracoes = 20
+    #Probabilidade de Mutação
+    p=0.002
+
+    crossoverObj = crossover()
+    fitTot = 0
+    
     # armazena cromossomos da população inicial gerada em lista
     pop = geraPopInicial(tamPopulacao)
     geracaoAtual = 0
     
-    #Probabilidade de Mutação
-    p=0.01
-    
     for m in range(geracoes): 
         # calcula fitTot e imprime populacoes geradas
         for i in range(len(pop)):
+            fitTot += pop[i].getFitness()
+            #impressão dos cromossomos:
             #print("---cromossomo " + str(i)+":")
             #for j in range(len(pop[i])):
                 #cr = pop[i]
                 #print(cr[j])
-            fitTot += pop[i].getFitness()
-            
             #print("---fitness=" + str(pop[i].getFitness()))
             #print("---distTot=" + str(pop[i].getDistTotal()))
             #print("\n")
@@ -45,14 +44,11 @@ def main():
         #print("geracao: " + str(geracaoAtual))
         geracaoAtual += 1
         # realiza cruzamento e adiciona filhos à população
-        pop = cruzamento(pop, pais, crossoverObj)
-        
+        pop = cruzamento(pop, pais, crossoverObj)     
         #Aplica a probabilidade de mutação a todos os integrantes da população
         mutacao(p,pop)
-
         # remove piores cromossomos até que len(pop) = tamPopulacao
         pop = selecionaPop(pop, tamPopulacao)
-
         fitTot = 0
         
     
@@ -62,8 +58,8 @@ def main():
         for j in range(len(melhorCrom[i])):
             cr = melhorCrom[i]
             print(cr[j])        
-        print("---Melhor fitness=" + str(melhorCrom[i].getFitness()))
-        print("---Menor distTot=" + str(melhorCrom[i].getDistTotal()))
+        print("---Melhor fitness=", int(melhorCrom[i].getFitness()))
+        print("---Menor distTot=", int(melhorCrom[i].getDistTotal()), "m")
     
     print("TEMPO: ",(time.time()-start_time))
 
@@ -100,10 +96,6 @@ def cruzamento(populacao, pais, crossoverObj):
         for j in range(qtdPais):
             if i is not j:
                 populacao.extend(crossoverObj.ox(pais[i], pais[j]))
-                #filhos = crossoverObj.ox(pais[i], pais[j])
-                #print(type(filhos))
-                #for n in range(len(filhos)):
-                #    populacao.append(filhos[n])
     return populacao
 
 def selecionaPop(pop, tamPopulacao):
@@ -120,16 +112,10 @@ def selecionaPop(pop, tamPopulacao):
         del fitList[indexMinFit]
     return pop
 
-
 def mutacao(p,pop):
-
     for i in range(len(pop)):
         if (random.random()<p):
             #print("Gene antigo "+ str(pop[i].gene))
             pop[i].mutacaoEM()
+            pop[i].calculafitness()
             #print("Gene novo " + str(pop[i].gene))
-
-    #popSort = 
-    #while len(pop) > tamPopulacao:
-    #    pop.remove(min(pop, key = pop.))
-    # criar cls pop com cromossomo e fit????
