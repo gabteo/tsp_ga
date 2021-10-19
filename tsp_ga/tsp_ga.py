@@ -3,16 +3,18 @@ from cidades import cidades
 from cromossomo import cromossomo
 from crossover import crossover
 import random
+import time
 
 def main():
-    tamPopulacao = 100
+    start_time = time.time()
+    tamPopulacao = 1000 #1200
     #unidadesSaude = cidades()
     fitTot = 0
     crossoverObj = crossover()
     
     # numero de pais selecionados para cruzamento em cada geracao:
-    nPais = 50
-    geracoes = 20
+    nPais = 40 #25
+    geracoes = 18
     # armazena cromossomos da população inicial gerada em lista
     pop = geraPopInicial(tamPopulacao)
     geracaoAtual = 0
@@ -21,8 +23,8 @@ def main():
         # calcula fitTot e imprime populacoes geradas
         for i in range(len(pop)):
             #print("---cromossomo " + str(i)+":")
-            for j in range(len(pop[i])):
-                cr = pop[i]
+            #for j in range(len(pop[i])):
+                #cr = pop[i]
                 #print(cr[j])
             fitTot += pop[i].getFitness()
             
@@ -37,7 +39,7 @@ def main():
 
         # seleciona pais para cruzamento
         pais = roleta(pop, nPais)
-        print("geravao: " + str(geracaoAtual))
+        #print("geracao: " + str(geracaoAtual))
         geracaoAtual += 1
         # realiza cruzamento e adiciona filhos à população
         pop = cruzamento(pop, pais, crossoverObj)
@@ -56,7 +58,8 @@ def main():
             print(cr[j])        
         print("---Melhor fitness=" + str(melhorCrom[i].getFitness()))
         print("---Menor distTot=" + str(melhorCrom[i].getDistTotal()))
-            
+    
+    print("TEMPO: ",(time.time()-start_time))
 
     
 
@@ -99,7 +102,7 @@ def cruzamento(populacao, pais, crossoverObj):
 
 def selecionaPop(pop, tamPopulacao):
     fitList = []
-    print(len(pop))
+    #print(len(pop))
     if len(pop) > tamPopulacao:
         for i in range(len(pop)):
             fitList.append(pop[i].getFitness())
