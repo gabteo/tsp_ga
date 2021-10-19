@@ -28,8 +28,8 @@ class cidades(object):
 
         self.maxDist = self.matrizDist.max()
         
-        print(self.matrizDist)
-        print(self.usVetor)
+        #print(self.matrizDist)
+        #print(self.usVetor)
         # print(self.enderecosVetor)
 
     # retorna vetor de apelidos das "cidades", no caso o nome das US
