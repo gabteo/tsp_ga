@@ -1,18 +1,20 @@
+from typing import Optional
 import tsp_ga
 from cidades import cidades
 from cromossomo import cromossomo
 from crossover import crossover
 import random
 import time
+from melhorVsGer import melhorVsGer 
 
-def main():
+def main(tamPopulacao = 100, nPais = 20, geracoes = 20, p = 0.002):
     start_time = time.time()
-    tamPopulacao = 100 #1200 1000
+    #tamPopulacao = 1000 #1200 1000
     # numero de pais selecionados para cruzamento em cada geracao:
-    nPais = 10 #25 40
-    geracoes = 20
+    #nPais = 40 #25 40
+    #geracoes = 30
     #Probabilidade de Mutação
-    p=0.002
+    #p=0.002
 
     crossoverObj = crossover()
     fitTot = 0
@@ -20,19 +22,27 @@ def main():
     # armazena cromossomos da população inicial gerada em lista
     pop = geraPopInicial(tamPopulacao)
     geracaoAtual = 0
+    vetDistMin = []
+    vetDistMin.append(getMelhorDist(pop, tamPopulacao))
+    
     
     for m in range(geracoes): 
+        geracaoAtual = m
+        
         # calcula fitTot e imprime populacoes geradas
         for i in range(len(pop)):
             fitTot += pop[i].getFitness()
             #impressão dos cromossomos:
-            #print("---cromossomo " + str(i)+":")
-            #for j in range(len(pop[i])):
-                #cr = pop[i]
-                #print(cr[j])
-            #print("---fitness=" + str(pop[i].getFitness()))
-            #print("---distTot=" + str(pop[i].getDistTotal()))
-            #print("\n")
+            imprimeCrom = False
+
+            if imprimeCrom:
+                print("---cromossomo " + str(i)+":")
+                for j in range(len(pop[i])):
+                    cr = pop[i]
+                    print(cr[j])
+                print("---fitness=" + str(pop[i].getFitness()))
+                print("---distTot=" + str(pop[i].getDistTotal()))
+                print("\n")
 
         # calcula a probabilidade de seleção    
         for i in range(len(pop)):
@@ -41,17 +51,18 @@ def main():
 
         # seleciona pais para cruzamento
         pais = roleta(pop, nPais)
-        #print("geracao: " + str(geracaoAtual))
-        geracaoAtual += 1
+        
         # realiza cruzamento e adiciona filhos à população
         pop = cruzamento(pop, pais, crossoverObj)     
         #Aplica a probabilidade de mutação a todos os integrantes da população
         mutacao(p,pop)
+
+        vetDistMin.append(getMelhorDist(pop, tamPopulacao))
+
         # remove piores cromossomos até que len(pop) = tamPopulacao
         pop = selecionaPop(pop, tamPopulacao)
         fitTot = 0
         
-    
     melhorCrom = selecionaPop(pop, 1)
     for i in range(len(melhorCrom)):
         print("---cromossomo " + str(i)+":")
@@ -62,7 +73,9 @@ def main():
         print("---Menor distTot=", int(melhorCrom[i].getDistTotal()), "m")
     
     print("TEMPO: ",(time.time()-start_time))
-
+    vetDistMin.append(getMelhorDist(pop, tamPopulacao))
+    melhorVsGer(geracoes, vetDistMin)
+    return melhorCrom
     
 
 
@@ -111,6 +124,12 @@ def selecionaPop(pop, tamPopulacao):
         del pop[indexMinFit]
         del fitList[indexMinFit]
     return pop
+
+def getMelhorDist(pop, tamPopulacao):
+    dists = []
+    for i in range(len(pop)):
+        dists.append(pop[i].getDistTotal()[0][0])
+    return min(dists)
 
 def mutacao(p,pop):
     for i in range(len(pop)):
