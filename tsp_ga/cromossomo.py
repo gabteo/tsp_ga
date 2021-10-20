@@ -1,5 +1,7 @@
 import random
 from collections import Sequence
+
+from numpy.lib.npyio import recfromtxt
 from cidades import cidades
 import numpy as np
 
@@ -22,18 +24,23 @@ class cromossomo(object):
     def calculafitness(self):
         # Origem: linhas
         # Destino: colunas
+        retornaInicio = False
+
         matriz = self.objCidades.getMatrizDist()
         self.distTotal = 0
         self.fitness = 0
         apelidos = self.objCidades.getApelidos()
-        for i in range(len(self.gene)-1):
-            #quando retorna ao inicio:
-            #indexOrigem = np.where(apelidos == self.gene[i-1])
-            #indexDestino = np.where(apelidos == self.gene[i])
+        for i in range(len(self.gene)):
+            if retornaInicio:
+            #quando retorna ao inicio
+                indexOrigem = np.where(apelidos == self.gene[i-1])
+                indexDestino = np.where(apelidos == self.gene[i])
+            elif i+1 < len(self.gene):
+            #quando não retorna ao inicio:
+                indexOrigem = np.where(apelidos == self.gene[i])
+                indexDestino = np.where(apelidos == self.gene[i+1])
 
-            #quando não retorna ao inicio
-            indexOrigem = np.where(apelidos == self.gene[i-1])
-            indexDestino = np.where(apelidos == self.gene[i])
+            
             # soma as distancias e torna o total negativo
             self.distTotal += (matriz[indexOrigem,indexDestino])
             # self.fitness=self.fitness+(matriz[self.gene[i],self.gene[i+1]])
