@@ -1,6 +1,6 @@
 # Solução do TSP via Algoritmos Genéticos
 
-Projeto de busca de soluções para o problema do caixeiro viajante, aplicado à distribuição de vacinas contra a COVID-19 em postos de vacidação de Curitiba - PR.
+Projeto de busca de soluções para o problema do caixeiro viajante, aplicado à distribuição de vacinas contra a COVID-19 em postos de vacinação de Curitiba - PR.
 
 ## Requisitos 
 Interpretador Python;
